@@ -1,0 +1,5 @@
+praw
+discord.py
+wikipedia
+asyncio
+python-dotenv
