@@ -4,7 +4,7 @@ reddit = praw.Reddit(client_id=os.getenv("redditID"),
                      client_secret=os.getenv('redditSecret'),
                      username=os.getenv('redditUsername'),
                      password=os.getenv('redditPass'),
-                     user_agent="RedditWatcher")
+                     user_agent=os.getenv('user_agent'))
 
 def livecheck():
     terms = os.getenv("terms")
