@@ -13,8 +13,7 @@ class RPS(commands.Cog):
 
     @commands.command()
     async def rps(self, ctx, throw):
-        seed = random.Random(500)
-        cpu = seed.choice(self.choices)
+        cpu = random.choice(self.choices)
         throw = throw.lower()
         if throw in self.choices:
             pass
