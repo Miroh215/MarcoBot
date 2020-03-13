@@ -1,6 +1,6 @@
-import discord, asyncio
+import discord, asyncio, os
 from discord.ext import commands
-
+import sqlite3
 
 class Remind(commands.Cog):
     """
@@ -15,6 +15,18 @@ class Remind(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.is_owner()
+    @commands.command()
+    async def uptime(self, ctx):
+        uptime = os.popen('uptime -p').read()
+        await ctx.send(uptime)
+        
+    @commands.is_owner()
+    @commands.command()
+    async def temp(self, ctx):
+        temp = os.popen('/opt/vc/bin/vcgencmd measure_temp').read()
+        await ctx.send(temp)
+        
     @commands.command(aliases=["remindme"])
     async def remind(self, ctx, time, unit, *, message):
         time = int(time)
