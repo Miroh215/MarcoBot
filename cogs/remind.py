@@ -45,7 +45,7 @@ class Remind(commands.Cog):
             await ctx.send("Invalid unit of time.")
         print(f"Reminding {ctx.message.author} in {origTime} {unit} about '{message}'")
         await ctx.send(f"Okay, I'll remind you in {origTime} {unit} about '{message}'.")
-        await asyncio.sleep(time);
+        await asyncio.sleep(time)
         await ctx.send(message)
         print(f"Reminded {ctx.message.author} about '{message}'.")
 
