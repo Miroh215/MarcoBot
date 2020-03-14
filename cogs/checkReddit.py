@@ -1,11 +1,9 @@
-import discord, praw, os, asyncio
+import discord, praw, os, asyncio, config
 from discord.ext import commands
 
-reddit = praw.Reddit(client_id=os.getenv("redditID"),
-                     client_secret=os.getenv('redditSecret'),
-                     username=os.getenv('redditUsername'),
-                     password=os.getenv('redditPass'),
-                     user_agent=os.getenv('user_agent'))
+reddit = praw.Reddit(client_id=config.client_id,
+                     client_secret=config.client_secret,
+                     user_agent=config.user_agent)
 
 class CheckReddit(commands.Cog):
     def __init__(self, client):
@@ -30,11 +28,22 @@ class CheckReddit(commands.Cog):
 
     @commands.command(aliases=['rc'])
     async def comments(self, ctx, sub, *, term):
-        try:
-            if str(os.getenv(f"{term}")) != "None":
-                term = str(os.getenv(f"{term}"))
-        except:
-            pass
+
+        # term = term.lower()
+        term = term.split(",")
+
+        for item in term:
+            # if item in config.preset_terms:
+            try:
+                [term.append(x) for x in config.preset_terms[item.lower()]]
+            except:
+                pass
+
+        temp = []
+        [temp.append(x.lower()) for x in term if x.lower() not in temp]
+
+        term = temp
+
         subreddit = reddit.subreddit(sub)
         print("Searching...")
         await ctx.send("Searching...")
@@ -42,8 +51,6 @@ class CheckReddit(commands.Cog):
         sorting = subreddit.hot()
         found = False
         sep = '-'*50
-        term = term.lower()
-        term = term.split(",")
         await ctx.send(term)
         for submission in sorting:
             # for word in submission.title:
@@ -81,11 +88,21 @@ class CheckReddit(commands.Cog):
 
     @commands.command(aliases=['post', 'search', 's', 'r'])
     async def check(self, ctx, sub, *,term):
-        try:
-            if str(os.getenv(f"{term}")) != "None":
-                term = str(os.getenv(f"{term}"))
-        except:
-            pass
+
+        term = term.split(",")
+
+        for item in term:
+            # if item in config.preset_terms:
+            try:
+                [term.append(x) for x in config.preset_terms[item.lower()]]
+            except:
+                pass
+
+        temp = []
+        [temp.append(x.lower()) for x in term if x.lower() not in temp]
+
+        term = temp
+
         results = 0
         try:
             subreddit = reddit.subreddit(sub)
@@ -97,8 +114,8 @@ class CheckReddit(commands.Cog):
         sorting = subreddit.hot()
         found = False
         sep = '-'*50
-        term = term.lower()
-        term = term.split(",")
+        # term = term.lower()
+        # term = term.split(",")
         await ctx.send(term)
         try:
             for submission in sorting:

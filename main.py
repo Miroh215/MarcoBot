@@ -3,7 +3,6 @@ from discord.ext import commands, tasks
 from itertools import cycle
 import config
 
-load_dotenv()
 client = commands.Bot(command_prefix = '!')
 activities = config.activities
 status = random.choice(activities)
@@ -102,6 +101,9 @@ async def reload(ctx, extension):
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
+        try:
+            client.load_extension(f'cogs.{filename[:-3]}')
+        except Exception as e:
+            print(e)
 
 client.run(config.discord_token)
