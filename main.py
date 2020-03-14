@@ -1,11 +1,11 @@
 import discord, os, random, asyncio, praw
-from dotenv import load_dotenv
 from discord.ext import commands, tasks
 from itertools import cycle
+import config
 
 load_dotenv()
 client = commands.Bot(command_prefix = '!')
-activities = os.getenv("activities").split(',')
+activities = config.activities
 status = random.choice(activities)
 
 @client.event
@@ -25,7 +25,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_member_remove(member):
-    print(f'{member} has abondoned the real world.')
+    print(f'{member} has abandoned the real world.')
 
 @client.event
 async def chooseActivity():
@@ -104,4 +104,4 @@ for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
-client.run(os.getenv("discordToken"))
+client.run(config.discord_token)
